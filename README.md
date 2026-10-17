@@ -1,4 +1,4 @@
-# DevOps Uptime Monitor & Log Rotator
+# Chattter Uptime Monitor & Log Rotator
 
 A lightweight, automated infrastructure monitoring tool built with **Bash**, **Vim**, and **Docker**. This project simulates an enterprise-level site reliability task by tracking server status codes and executing localized log rotations.
 
