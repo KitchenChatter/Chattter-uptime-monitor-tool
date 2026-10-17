@@ -1,0 +1,31 @@
+# 1. the name of your automated pipeline 
+name: DevOps CI Build Pipeline
+
+# 2. Trigger: Run this pipeline automatically every time code is pushed to the 'main' branch
+on:
+  push:
+    branches: [ main ]
+
+# 3. The actual sequence of automated jobs
+jobs:
+  build-and-test:
+    #Tell GitHub to spin up a freash, cloud-hosts Ubuntu Linux virtual machine
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step A: Dowmload your code from your repository into the cloud machine
+    - name: Checkout Repository Code
+      uses: actions/checkout@v4 
+
+    
+    # Step B: Run a Docker build test using your exact Dockerfile blueprint
+    - name: Test Docker Container Build
+      run: |
+        echo "=== Launching Automated Cloud Build ==="
+        docker build -t cloud-uptime-monitor:latest .
+
+    # Step C: Execute a test run of the container to verify the script passes cleanly
+    - name: Execute Container Integration Test
+      run: |
+        echo "=== Booting Up Isolated Container Test ==="
+        docker run --rm cloud-uptime-monitor:latest 
