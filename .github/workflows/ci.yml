@@ -15,7 +15,7 @@ jobs:
     steps:
     # Step A: Dowmload your code from your repository into the cloud machine
     - name: Checkout Repository Code
-      uses: actions/checkout@v4 
+      uses: actions/checkout@v5 
 
     
     # Step B: Run a Docker build test using your exact Dockerfile blueprint
