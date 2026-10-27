@@ -12,6 +12,11 @@
     * * * * * docker run --rm chattter-monitor:v1 >> /tmp/cron_uptime.log 2>&1
     ```
 
+### 🐛 Bug 1.2: Uninitialized State Memory Variable (Integer Expression Expected)
+*   **The Symptom:** Running the threshold monitoring script throws a fatal shell crash stating: `./uptime_monitor.sh: line 49: [: : integer expression expected`.
+*   **The Root Cause:** The variable `$CURRENT_FAILURES` was mapped *before* the script completed its initial health loop. On a successful `200` query run, the code cleared the file but failed to populate a numerical placeholder value inside the running shell session memory prior to evaluating the threshold expression.
+*   **The Mitigation:** Restructured the tracking logic execution order. The persistent `.failure_counter` database file is now explicitly parsed right after the network `curl` response wrapper concludes, guaranteeing a stable, non-empty integer is always supplied to the conditional evaluation boundaries.
+
 ***
 
 ## 🐳 Section 2: Container Isolation & Layer Compilation (Docker)
@@ -93,6 +98,11 @@
     3. Hide the key securely inside your Mac's interactive session memory: `export SLACK_WEBHOOK_URL="https://slack.com..."`.
     4. Safely push your code: `git push origin main`.
 
+### 🐛 Bug 4.2: Webfront Endpoint Misdirection (HTML Code Injection)
+*   **The Symptom:** Firing an alert returns a raw block of browser layout configuration text (`<!DOCTYPE html>`) instead of a slack card.
+*   **The Root Cause:** The main customer front-page gateway (`https://slack.com`) was accidentally bound to the alerting variables instead of the programmatic inbound services hook URL link.
+*   **The Mitigation:** Replace the top-level string reference with the dedicated backend programmatic routing link: `https://slack.comT.../B.../X...`
+
 ***
 
 ## ☁️ Section 5: Global Integration Failures (Amazon Web Services)
@@ -105,4 +115,3 @@
     cd ~/chattter-infra
     terraform apply -auto-approve
     ```
-
