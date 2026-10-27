@@ -5,6 +5,9 @@ URL="https://httpbin.org"
 LOG_FILE="server_status.log"
 MAX_LINES=10
 
+
+SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL}"
+
 echo "=== Starting Uptime Check ==="
 
 # 1. Fetch the HTTP status code using curl
@@ -18,6 +21,11 @@ if [ "$STATUS_CODE" -eq 200 ]; then
 	echo "[$TIMESTAMP] SUCCESS: Website is UP ($STATUS_CODE)" >> "$LOG_FILE"
 else
 	echo "[$TIMESTAMP] ALERT: Website is DOWN ($STATUS_CODE)" >> "$LOG_FILE"
+
+        echo "[$TIMESTAMP] INCIDENT: Triggering instant Slack channel warning..."
+    curl -s -X POST -H 'Content-type: application/json' \
+    --data '{"text":"🚨 *Chattter SRE Alert* 🚨\n*Incident:* Target Website is DOWN!\n*Status Code:* '"$STATUS_CODE"'\n*Timestamp:* '"$TIMESTAMP"'"}' \
+    "$SLACK_WEBHOOK_URL"
 fi
 
 # 4. DevOps Log Rotation
