@@ -37,6 +37,6 @@ fi
 # 5. Cloud Data Pipeline: Stream logs to your central AWS S3 storage bucket vault
 # This copies your log file to your cloud storage container every time the check runs
 echo "[$TIMESTAMP] PIPELINE: Syncing logs to AWS S3 Cloud Storage..."
-/usr/local/bin/aws s3 cp "$LOG_FILE" s3://chattter-log-vault-mrowens/server_status.log --quiet
+aws s3 cp "$LOG_FILE" s3://chattter-log-vault-mrowens/server_status.log --quiet
 
 echo "=== Check Complete. Log updated. ==="
