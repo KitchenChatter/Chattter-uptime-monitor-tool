@@ -1,31 +1,35 @@
-# 1. the name of your automated pipeline 
 name: Chattter CI Build Pipeline
 
-# 2. Trigger: Run this pipeline automatically every time code is pushed to the 'main' branch
 on:
   push:
     branches: [ main ]
 
-# 3. The actual sequence of automated jobs
 jobs:
   build-and-test:
-    #Tell GitHub to spin up a freash, cloud-hosts Ubuntu Linux virtual machine
     runs-on: ubuntu-latest
 
     steps:
-    # Step A: Dowmload your code from your repository into the cloud machine
+    # Step A: Download your code from your repository into the cloud machine
     - name: Checkout Repository Code
-      uses: actions/checkout@v5 
+      uses: actions/checkout@v5
 
-    
     # Step B: Run a Docker build test using your exact Dockerfile blueprint
     - name: Test Docker Container Build
       run: |
         echo "=== Launching Automated Cloud Build ==="
         docker build -t cloud-uptime-monitor:latest .
 
-    # Step C: Execute a test run of the container to verify the script passes cleanly
+    # Step C: Execute a test run of the container using Mock AWS variables
+    # We pass fake AWS tokens into the container environment so the script passes validation
     - name: Execute Container Integration Test
+      env:
+        AWS_ACCESS_KEY_ID: mock_test_key_id
+        AWS_SECRET_ACCESS_KEY: mock_test_secret_key
+        AWS_DEFAULT_REGION: us-west-1
       run: |
         echo "=== Booting Up Isolated Container Test ==="
-        docker run --rm cloud-uptime-monitor:latest 
+        docker run --rm \
+          -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+          -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+          -e AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION \
+          cloud-uptime-monitor:latest
