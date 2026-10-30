@@ -1,0 +1,11 @@
+{"timestamp":"2026-10-30T01:46:09Z","target":"https://httpbin.org","http_status":200,"latency_ms":340,"status":"PASS"}
+{"timestamp":"2026-10-30T01:46:10Z","target":"https://httpbin.org","http_status":200,"latency_ms":439,"status":"PASS"}
+{"timestamp":"2026-10-30T01:46:10Z","target":"https://httpbin.org","http_status":200,"latency_ms":331,"status":"PASS"}
+{"timestamp":"2026-10-30T01:46:10Z","target":"https://httpbin.org","http_status":200,"latency_ms":364,"status":"PASS"}
+{"timestamp":"2026-10-30T01:46:11Z","target":"https://httpbin.org","http_status":200,"latency_ms":366,"status":"PASS"}
+{"timestamp":"2026-10-30T01:47:10Z","target":"https://this-site-is-broken.com","http_status":000,"latency_ms":0,"status":"FAIL"}
+{"timestamp":"2026-10-30T01:47:10Z","target":"https://this-site-is-broken.com","http_status":000,"latency_ms":0,"status":"FAIL"}
+{"timestamp":"2026-10-30T01:47:10Z","target":"https://this-site-is-broken.com","http_status":000,"latency_ms":0,"status":"FAIL"}
+{"timestamp":"2026-10-29T18:45:00Z","target":"https://this-site-is-broken.com","http_status":0,"latency_ms":0,"status":"FAIL"}
+{"timestamp":"2026-10-29T18:46:00Z","target":"https://this-site-is-broken.com","http_status":0,"latency_ms":0,"status":"FAIL"}
+{"timestamp":"2026-10-29T18:47:00Z","target":"https://this-site-is-broken.com","http_status":0,"latency_ms":0,"status":"FAIL"}
