@@ -1,0 +1,27 @@
+name: Automated Infrastructure Monitor Loop
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  run-telemetry:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: Make Script Executable
+        run: chmod +x uptime_monitor.sh
+
+      - name: Execute Synthetic Telemetry Audit
+        run: ./uptime_monitor.sh
+
+      - name: Securely Ship Logs to AWS S3 Cloud Storage
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: 'us-west-1'
+        run: |
+          aws s3 cp server_status.log s3://chattter-log-vault-mrowens/server_status.log
