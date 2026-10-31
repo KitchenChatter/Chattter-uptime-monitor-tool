@@ -12,16 +12,28 @@ jobs:
       - name: Checkout Repository Code
         uses: actions/checkout@v4
 
+      - name: Setup Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
       - name: Make Script Executable
         run: chmod +x uptime_monitor.sh
 
-      - name: Execute Synthetic Telemetry Audit
+      - name: 1. Execute Synthetic Telemetry Audit
         run: ./uptime_monitor.sh
 
-      - name: Securely Ship Logs to AWS S3 Cloud Storage
+      - name: 2. Compile Customer Facing HTML Dashboard
+        run: python3 generate_dashboard.py
+
+      - name: 3. Securely Ship Assets to AWS Production Hosting
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: 'us-west-1'
         run: |
+          # Ship the logs database tracking file
           aws s3 cp server_status.log s3://chattter-log-vault-mrowens/server_status.log
+          
+          # Ship the customer-facing index.html dashboard file
+          aws s3 cp index.html s3://chattter-log-vault-mrowens/index.html
