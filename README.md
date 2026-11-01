@@ -1,4 +1,4 @@
-cat << 'EOF' > README.md
+
 # 🚀 Chattter Uptime Monitor & Cloud Log Aggregator
 
 A lightweight, high-performance site reliability engineering (SRE) tool built with **Bash**, **Vim**, and **Docker**, featuring an automated cloud data pipeline backed by **Amazon Web Services (AWS)**.
