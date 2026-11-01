@@ -3,6 +3,9 @@
 
 A lightweight, high-performance site reliability engineering (SRE) tool built with **Bash**, **Vim**, and **Docker**, featuring an automated cloud data pipeline backed by **Amazon Web Services (AWS)**.
 
+<img width="732" height="527" alt="Screenshot 2026-11-01 at 3 25 24 PM" src="https://github.com/user-attachments/assets/b600bc96-792e-4623-b993-2c16de313d2b" />
+
+
 ---
 
 # 📊 Advanced Telemetry & SLO Architecture (Phase 8-10)
