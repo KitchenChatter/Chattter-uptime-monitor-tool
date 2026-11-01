@@ -21,19 +21,25 @@ jobs:
         run: chmod +x uptime_monitor.sh
 
       - name: 1. Execute Synthetic Telemetry Audit
-        run: ./uptime_monitor.sh
+        run: |
+          touch server_status.log
+          ./uptime_monitor.sh
+          echo "--- Current Log Contents ---"
+          cat server_status.log
 
       - name: 2. Compile Customer Facing HTML Dashboard
-        run: python3 generate_dashboard.py
+        run: |
+          python3 generate_dashboard.py
+          echo "--- Generated HTML Preview ---"
+          head -n 5 index.html
 
       - name: 3. Securely Ship Assets to AWS Production Hosting
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: 'us-west-1'
+          AWS_REGION: 'us-west-1'
         run: |
-          # Ship the logs database tracking file
+          # Push assets live using explicit environment injection structures
           aws s3 cp server_status.log s3://chattter-log-vault-mrowens/server_status.log
-          
-          # Ship the customer-facing index.html dashboard file
           aws s3 cp index.html s3://chattter-log-vault-mrowens/index.html
