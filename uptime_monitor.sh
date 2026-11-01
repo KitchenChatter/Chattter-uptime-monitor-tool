@@ -23,8 +23,20 @@ if [ $CURL_EXIT -ne 0 ]; then
 else
     HTTP_STATUS=$(echo "$CURL_OUT" | cut -d',' -f1)
     LATENCY_SEC=$(echo "$CURL_OUT" | cut -d',' -f2)
-    LATENCY_MS=$(echo "$LATENCY_SEC * 1000 / 1" | bc 2>/dev/null || awk "BEGIN {print int($LATENCY_SEC * 1000)}")
+    
+    # Extract just the integer parts and digits from curl's float string natively
+    # (e.g., converts "0.145" into 145 ms without relying on external 'bc')
+    INT_PART=$(echo "$LATENCY_SEC" | cut -d'.' -f1)
+    DEC_PART=$(echo "$LATENCY_SEC" | cut -d'.' -f2 | cut -c1-3)
+    
+    # Strip leading zeros to avoid Bash interpreting it as octal math
+    DEC_PART=$(echo "$DEC_PART" | sed 's/^0*//')
+    if [ -z "$DEC_PART" ]; then DEC_PART=0; fi
+    if [ -z "$INT_PART" ]; then INT_PART=0; fi
+    
+    LATENCY_MS=$(( (INT_PART * 1000) + DEC_PART ))
 fi
+
 
 # 3. Determine pass/fail status
 if [ "$HTTP_STATUS" -eq 200 ]; then
